@@ -1,0 +1,88 @@
+1) Usando SQL Server, crie um banco de dados de nome "Concessionarias";
+	CREATE DATABASE Concessionarias;
+
+2) Crie as relações abaixo discriminadas, associando corretamente os tipos de dados aos atributos, as chaves primárias de cada relação, bem como as ligações de chave estrangeira
+	CREATE TABLE Paises(
+		Cod_Pais BIGINT PRIMARY KEY IDENTITY,
+		Nome_Pais VARCHAR(255) NOT NULL
+	);
+
+	CREATE TABLE Cidades(
+		Cod_Cidade BIGINT PRIMARY KEY IDENTITY,
+		Nome_Cidade VARCHAR(255) NOT NULL,
+		UF VARCHAR(2) NOT NULL,
+		Cod_Pais BIGINT NOT NULL,
+		FOREIGN KEY (Cod_Pais) REFERENCES Paises(Cod_Pais)
+	);
+
+	CREATE TABLE Marcas(
+		Cod_Marca BIGINT PRIMARY KEY IDENTITY,
+		Nome_Marca VARCHAR(255) NOT NULL,
+		Pais_Origem BIGINT NOT NULL,
+		FOREIGN KEY (Pais_Origem) REFERENCES Paises(Cod_Pais)
+	);
+
+	CREATE TABLE Modelos (
+		Cod_Modelo BIGINT PRIMARY KEY IDENTITY,
+		Nome_Modelo VARCHAR(255) NOT NULL,
+		Tipo_Modelo VARCHAR(10) NOT NULL,
+		Cor_Modelo VARCHAR(60) NOT NULL,
+		Cod_Marca BIGINT NOT NULL,
+		FOREIGN KEY (Cod_Marca) REFERENCES Marcas(Cod_Marca)
+	);
+
+	CREATE TABLE Filiais (
+		Cod_Filial BIGINT PRIMARY KEY IDENTITY,
+		Nome_Filial VARCHAR(255) NOT NULL,
+		Cidade_Filial BIGINT NOT NULL,
+		FOREIGN KEY (Cidade_Filial) REFERENCES Cidades(Cod_Cidade)
+	);
+
+	CREATE TABLE Disponiveis (
+		Cod_Disponiveis BIGINT PRIMARY KEY IDENTITY,
+		Cod_Modelo BIGINT NOT NULL,
+		Cod_Filial BIGINT NOT NULL,
+		Data TIMESTAMP NOT NULL,
+		Quantidade INT NOT NULL,
+		Valor_Venda MONEY NOT NULL,
+		FOREIGN KEY (Cod_Modelo) REFERENCES Modelos(Cod_Modelo),
+		FOREIGN KEY (Cod_Filial) REFERENCES Filiais(Cod_Filial)
+	);
+
+	CREATE TABLE Veiculos (
+		Cod_Veiculo BIGINT PRIMARY KEY IDENTITY,
+		Cod_Modelo BIGINT NOT NULL,
+		Ano_Fab INT NOT NULL,
+		Ano_Modelo INT NOT NULL,
+		FOREIGN KEY (Cod_Modelo) REFERENCES Modelos(Cod_Modelo)
+	);
+
+3) Altere a tabela de Modelo e acrescente o Chassi ;
+	ALTER TABLE Modelos ADD Chassi VARCHAR(20) NOT NULL;
+
+4) Altere a tabela de Filial e acrescente as colunas E-Mail e Telefone;
+	ALTER TABLE Filiais ADD Email VARCHAR(100) NOT NULL, Telefone VARCHAR(20) NOT NULL;
+
+5) Altere a tabela de Filial adicionando a restrição de chave unica para Cidade_filial;	
+	ALTER TABLE Filiais ADD CONSTRAINT UK_CidadeFilial UNIQUE (Cidade_filial);
+
+7) Avalie toda a estrutura de relações deste modelo relacional e faça uma sugestão do que poderia ser melhorado para reduzir a redundância de dados.
+	Para implementação dessa questão foi visualizado a importancia de se ter uma tabela de cores, tendo em vista a redundância de valores escritos por extenso em outras tabelas.
+	
+	CREATE TABLE Cores (
+	 Cod_Cor BIGINT PRIMARY KEY IDENTITY,
+	 Nome_Cor VARCHAR(60);
+	);
+
+
+8) Avalie e caso pertinente, altere as estruturas criando restrições de checagem.
+	Para implementação dessa questão foi visualizado a importancia de regrar-se a parte de inclusão do UF na tabela cidade. O campo veio a ser criado apenas com VARCHAR(2) fazendo-se preciso a implementação da restrição.
+	Outra implementação feita foi a alteração da tabela Disponiveis para a regra de que o Valor_Venda seja sempre maior que 0.
+	
+	ALTER TABLE Cidades
+	ADD CONSTRAINT CK_UF_Brasil
+	CHECK (UF IN ('AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'));
+
+	ALTER TABLE Disponiveis
+	ADD CONSTRAINT CK_Valor_Venda_Positive
+	CHECK (Valor_Venda > 0);

@@ -1,0 +1,72 @@
+1- Identifique e escreva as superchaves de cada relação;
+ Tabela Funcionarios - CPF;
+ Tabela Departamentos - Codigo;
+ Tabela Motoristas - CPF, CNH;
+ Tabela Marcas - Codigo;
+ Tabela Modelos - Codigo;
+ Tabela Veiculos - Chassi, Placa;
+
+2- Identifique e escreva as chaves candidatas de cada relação;
+ Tabela Funcionarios - CPF;
+ Tabela Departamentos - Codigo;
+ Tabela Motoristas - CPF, CNH;
+ Tabela Marcas - Codigo;
+ Tabela Modelos - Codigo;
+ Tabela Veiculos - Chassi, Placa;
+
+3- Identifique a chave primária de cada relação;
+ Tabela Funcionarios - CPF;
+ Tabela Departamentos - Codigo;
+ Tabela Motoristas - CNH;
+ Tabela Marcas - Codigo;
+ Tabela Modelos - Codigo;
+ Tabela Veiculos - Chassi;
+
+4- dentifique em cada relação quais atributos são chave estrangeira e suas referências (caso houver);
+ Tabela Funcionarios - Sem chave;
+ Tabela Departamentos - CPF Gerente (Funcionarios(cpf));
+ Tabela Motoristas - CPF Supervisor (Funcionarios(cpf));;
+ Tabela Marcas - Sem chave;;
+ Tabela Modelos - Marca (Marcas(codigo));
+ Tabela Veiculos - Modelo (Modelo(codigo));
+
+5-Identifique e escreva a natureza e o tipo de dados adequado para cada atributo das relações;
+
+ Tabela Funcionarios 
+  CPF: Texto varchar(11) (PK)
+  Primeiro Nome: Texto varchar(60)
+  Nome do meio: Texto varchar(60)
+  Sobrenome: Texto varchar(60)
+  Data de Nascimento: Data Date
+  Gênero: Texto varchar(1)
+
+ Tabela Departamentos
+  Codigo: Numero bigint
+  Nome: Texto varchar(255)
+  Número de Funcionarios: Numérico int
+  CPF do Gerente: Texto varchar(11)
+
+ Tabela Motoristas
+  CNH: Texto varchar(9)
+  CPF: Texto varchar(11)
+  Salario: Numérico money
+  CPF Supervisor: Texto varchar(11)
+  Departamento: Numérico bigint
+
+ Tabela Marcas
+  Codigo: Numérico bigint
+  Nome: Texto varchar(255)
+
+ Tabela Modelos
+  Codigo: Numérico bigint
+  Nome: Texto varchar(255)
+  Marca: Numérico bigint
+
+ Tabela Veiculos
+  Chassi: Texto varchar(20)
+  Placa: Texto varchar(7)
+  Renavam: Texto varchar(20)
+  Ano Modelo: Numérico int
+  Ano Fabricacao: Numérico int
+  Modelo: Numérico bigint
+  Kilometragem: Numérico float
